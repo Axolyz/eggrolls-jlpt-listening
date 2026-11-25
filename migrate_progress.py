@@ -248,7 +248,10 @@ def copy_progress(db, matched):
 
 
 def open_sqlite(path, readonly=False):
-    database = sqlite3.connect(path.as_uri() + ("?mode=ro" if readonly else "?mode=rw"), uri=True)
+    database = sqlite3.connect(path.as_uri() + "?mode=rw", uri=True)
+    if readonly:
+        # A closed Anki collection may use WAL with no sidecar files yet.
+        database.execute("pragma query_only=on")
     database.create_collation("unicase", lambda a, b: (a.casefold() > b.casefold()) - (a.casefold() < b.casefold()))
     return database
 
