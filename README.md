@@ -4,7 +4,11 @@
 
 日间用真朱和鸟之子纸色，夜间用珊瑚朱和深靛蓝。Anki 卡面跟随客户端的日夜模式。 [NIPPON COLORS 日本の伝統色](https://nipponcolors.com/)
 
-## 构建和导入
+## 下载和导入
+
+下载发行页里的 `jlpt-listening.apkg`，用 Anki 打开。第一次导入包含约 334 MB 的媒体。 [下载最新版](https://github.com/Axolyz/anki-jlpt-listening/releases/latest)
+
+## 从上游构建
 
 需要 Git 和 uv。构建使用独立的临时 Anki 数据库。生成的 `dist/jlpt-listening.apkg` 可在 Anki 里作为独立牌组导入，包含音频和字体。
 
@@ -46,4 +50,4 @@ uv run preview.py --upstream ../anki-jlpt-decks
 
 ## 来源
 
-原牌组作者为 egg rolls。和色版沿用原始词汇与媒体，并为听力、词义辨析和完形修改了卡片模板、样式与开卡规则。原牌组适用 CC BY-NC 4.0。完形使用 Matthew Hayes 的 Cloze Anything v0.3，适用 Apache 2.0。两套许可随构建包附带。 [egg rolls JLPT 牌组](https://github.com/5mdld/anki-jlpt-decks) · [Cloze Anything](https://github.com/matthayes/anki_cloze_anything/releases/tag/v0.3)
+原牌组作者为 egg rolls。和色版沿用原始词汇与媒体，并为听力、词义辨析和完形修改了卡片模板、样式与开卡规则。原牌组适用 CC BY-NC 4.0，详见 [原牌组许可](UPSTREAM-LICENSE.txt)。完形使用 Matthew Hayes 的 Cloze Anything v0.3，适用 Apache 2.0。两套许可随构建包附带。 [egg rolls JLPT 牌组](https://github.com/5mdld/anki-jlpt-decks) · [Cloze Anything](https://github.com/matthayes/anki_cloze_anything/releases/tag/v0.3)
