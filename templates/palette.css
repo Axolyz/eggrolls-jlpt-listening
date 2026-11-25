@@ -1,0 +1,202 @@
+/* NIPPON COLORS: https://nipponcolors.com/ */
+:root {
+  color-scheme: light;
+  --jlpt-surround: #e7dac3;
+  --jlpt-paper: #f7f0dc; /* 鳥の子 × 白練 */
+  --fg: #302720;
+  --fg-subtle: #675849;
+  --canvas-elevated: #fdf8ea;
+  --border: #b6a085;
+  --border-subtle: #d5c4a9;
+  --jlpt-control-border: #9a8369;
+  --fg-highlight-orange: #ab3b3a; /* 真朱 */
+  --fg-highlight-teal: #355e54;
+  --fg-highlight-blue: #3a5777;
+  --fg-highlight-purple: #72506b;
+  --jlpt-type-good-ink: #365234;
+  --jlpt-type-good-paper: #e3ead6;
+  --jlpt-type-bad-ink: #8f3028;
+  --jlpt-type-bad-paper: #f5ddd2;
+  --jlpt-type-missed-paper: #e8dfcc;
+}
+
+:root[data-jlpt-day-theme='sumi-paper'] {
+  /* https://japanesecolors.com/palettes/sumi-and-paper/ */
+  --jlpt-surround: #c2b280;
+  --jlpt-paper: #fff1cf;
+  --fg: #343434;
+  --fg-subtle: var(--fg);
+  --canvas-elevated: var(--jlpt-paper);
+  --border: #a3a3a2;
+  --border-subtle: var(--jlpt-surround);
+  --jlpt-control-border: #727171;
+  --fg-highlight-orange: var(--fg);
+  --fg-highlight-teal: var(--fg);
+  --fg-highlight-blue: var(--fg);
+  --jlpt-target-decoration: underline;
+}
+
+/* Resolve the selected night palette at the client's dark-mode scope. */
+:root:is(.night-mode, .night_mode, .nightMode, [data-bs-theme='dark']),
+:root :is(.night-mode, .night_mode, .nightMode, [data-bs-theme='dark']) {
+  color-scheme: dark;
+  --jlpt-surround: var(--jlpt-night-surround, #08192d); /* 褐 */
+  --jlpt-paper: var(--jlpt-night-paper, #0f2540); /* 紺 */
+  --fg: var(--jlpt-night-fg, #f5eddb);
+  --fg-subtle: var(--jlpt-night-fg-subtle, #bcc8d3);
+  --canvas-elevated: var(--jlpt-night-elevated, #172e49);
+  --border: var(--jlpt-night-border, #415976);
+  --border-subtle: var(--jlpt-night-border-subtle, #304761);
+  --jlpt-control-border: var(--jlpt-night-control-border, #8296aa);
+  --fg-highlight-orange: var(--jlpt-night-accent, #f17c67); /* 珊瑚朱 */
+  --fg-highlight-teal: var(--jlpt-night-teal, #a6cbb9);
+  --fg-highlight-blue: var(--jlpt-night-blue, #a6bdd8);
+  --fg-highlight-purple: var(--jlpt-night-purple, #c7afd0);
+  --jlpt-type-good-ink: var(--jlpt-night-type-good-ink, #c5ddbe);
+  --jlpt-type-good-paper: var(--jlpt-night-type-good-paper, #243e32);
+  --jlpt-type-bad-ink: var(--jlpt-night-type-bad-ink, #ffd0c2);
+  --jlpt-type-bad-paper: var(--jlpt-night-type-bad-paper, #58312e);
+  --jlpt-type-missed-paper: var(--jlpt-night-type-missed-paper, #354960);
+  --jlpt-target-decoration: none;
+}
+
+:root:is(
+  [data-jlpt-night-theme='ink'],
+  [data-jlpt-night-theme='ink-byakugun'],
+  [data-jlpt-night-theme='ink-fuji'],
+  [data-jlpt-night-theme='ink-yamabukicha']
+) {
+  --jlpt-night-surround: #121211;
+  --jlpt-night-paper: #1c1c1c; /* 墨 */
+  --jlpt-night-fg: #eee8df;
+  --jlpt-night-fg-subtle: #c0b5a8;
+  --jlpt-night-elevated: #252321;
+  --jlpt-night-border: #534c45;
+  --jlpt-night-border-subtle: #3e3934;
+  --jlpt-night-control-border: #82766b;
+  --jlpt-night-accent: #fb966e; /* 洗朱 */
+  --jlpt-night-teal: #aec7b3;
+  --jlpt-night-blue: #aabcd0;
+  --jlpt-night-purple: #c7b3cb;
+  --jlpt-night-type-good-ink: #c5ddbe;
+  --jlpt-night-type-good-paper: #29372c;
+  --jlpt-night-type-bad-ink: #ffd0c2;
+  --jlpt-night-type-bad-paper: #4b2e26;
+  --jlpt-night-type-missed-paper: #3b3631;
+}
+
+:root[data-jlpt-night-theme='ink-byakugun'] { --jlpt-night-accent: #78c2c4; }
+:root[data-jlpt-night-theme='ink-fuji'] { --jlpt-night-accent: #8b81c3; }
+:root[data-jlpt-night-theme='ink-yamabukicha'] { --jlpt-night-accent: #d19826; }
+
+:root[data-jlpt-night-theme='tea'] {
+  --jlpt-night-surround: #251b16;
+  --jlpt-night-paper: #3a2b23; /* 黒鳶, darkened */
+  --jlpt-night-fg: #f6ebd9;
+  --jlpt-night-fg-subtle: #cfbca6;
+  --jlpt-night-elevated: #45332a;
+  --jlpt-night-border: #725846;
+  --jlpt-night-border-subtle: #564235;
+  --jlpt-night-control-border: #a28a71;
+  --jlpt-night-accent: #f6c555; /* 梔子 */
+  --jlpt-night-teal: #b5c6a8;
+  --jlpt-night-blue: #b4c1d1;
+  --jlpt-night-purple: #dab6ce;
+  --jlpt-night-type-good-ink: #d5e4bd;
+  --jlpt-night-type-good-paper: #42462c;
+  --jlpt-night-type-bad-ink: #ffd4be;
+  --jlpt-night-type-bad-paper: #693b2f;
+  --jlpt-night-type-missed-paper: #594637;
+}
+
+/* https://www.color-sample.com/colorschemes/japanese/spring/ */
+:root:is([data-jlpt-night-theme='koubai'], [data-jlpt-night-theme='aoyamabuki']) {
+  --jlpt-night-fg: #ffffff;
+  --jlpt-night-type-missed-paper: var(--jlpt-night-elevated);
+}
+
+:root[data-jlpt-night-theme='koubai'] {
+  --jlpt-night-surround: #360c19;
+  --jlpt-night-paper: #62162e;
+  --jlpt-night-fg-subtle: #e3d5d9;
+  --jlpt-night-elevated: #6f293f;
+  --jlpt-night-border: #8e5769;
+  --jlpt-night-border-subtle: #7d3e52;
+  --jlpt-night-control-border: #bb9ba5;
+  --jlpt-night-accent: #f98289;
+}
+
+:root[data-jlpt-night-theme='aoyamabuki'] {
+  --jlpt-night-surround: #192e1d;
+  --jlpt-night-paper: #2d5434;
+  --jlpt-night-fg-subtle: #d9e0da;
+  --jlpt-night-elevated: #3e6244;
+  --jlpt-night-border: #68846d;
+  --jlpt-night-border-subtle: #517157;
+  --jlpt-night-control-border: #a5b5a8;
+  --jlpt-night-accent: #ffef20;
+}
+
+:root[data-jlpt-night-theme='verdigris'] {
+  /* https://japanesecolors.com/palettes/verdigris/ */
+  --jlpt-night-surround: #1d2a2a;
+  --jlpt-night-paper: #344c4d;
+  --jlpt-night-fg: #ffffff;
+  --jlpt-night-fg-subtle: #a9d1bb;
+  --jlpt-night-elevated: #007e60;
+  --jlpt-night-border: #479573;
+  --jlpt-night-border-subtle: #428484;
+  --jlpt-night-control-border: #a9d1bb;
+  --jlpt-night-accent: #a9d1bb;
+}
+
+:root[data-jlpt-night-theme='ukiyoe'] {
+  /* https://japanesecolors.com/palettes/ukiyoe-print/ */
+  --jlpt-night-surround: #343434;
+  --jlpt-night-paper: #1a4472;
+  --jlpt-night-fg: #ffffff;
+  --jlpt-night-fg-subtle: #d6dde6;
+  --jlpt-night-elevated: #165e83;
+  --jlpt-night-border: #5a7899;
+  --jlpt-night-border-subtle: #165e83;
+  --jlpt-night-control-border: #aabacb;
+  --jlpt-night-accent: #fcf16e;
+}
+
+:root:is([data-jlpt-night-theme='shikon'], [data-jlpt-night-theme='tetsuonando'], [data-jlpt-night-theme='aikobicha']) {
+  --jlpt-night-fg: #fcfaf2; /* 白練 */
+  --jlpt-night-type-missed-paper: var(--jlpt-night-elevated);
+}
+
+:root[data-jlpt-night-theme='shikon'] {
+  --jlpt-night-surround: #201923;
+  --jlpt-night-paper: #3c2f41;
+  --jlpt-night-fg-subtle: #cac5c4;
+  --jlpt-night-elevated: #514554;
+  --jlpt-night-border: #745b6b;
+  --jlpt-night-border-subtle: #5b4f5d;
+  --jlpt-night-control-border: #a49da1;
+  --jlpt-night-accent: #f8c3cd;
+}
+
+:root[data-jlpt-night-theme='tetsuonando'] {
+  --jlpt-night-surround: #142d30;
+  --jlpt-night-paper: #255359;
+  --jlpt-night-fg-subtle: #c4cfca;
+  --jlpt-night-elevated: #3d656a;
+  --jlpt-night-border: #607060;
+  --jlpt-night-border-subtle: #476e71;
+  --jlpt-night-control-border: #99adac;
+  --jlpt-night-accent: #ebb471;
+}
+
+:root[data-jlpt-night-theme='aikobicha'] {
+  --jlpt-night-surround: #292a17;
+  --jlpt-night-paper: #4b4e2a;
+  --jlpt-night-fg-subtle: #cecdbe;
+  --jlpt-night-elevated: #5e6140;
+  --jlpt-night-border: #76734f;
+  --jlpt-night-border-subtle: #676a4a;
+  --jlpt-night-control-border: #abab96;
+  --jlpt-night-accent: #dac9a6;
+}

@@ -1,0 +1,165 @@
+.card,
+.card.nightMode {
+  background-color: var(--jlpt-surround);
+}
+
+.JLPTCard {
+  --canvas: var(--jlpt-paper);
+  --svg-path: var(--fg-highlight-orange);
+  color: var(--fg);
+}
+
+/* One border per side, using the upstream content layout. */
+.JLPTCard > .JLPTSurface {
+  --surface-padding: clamp(12px, 4vw, 22px);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--border-radius) + 4px);
+  background: var(--canvas);
+}
+
+.JLPTSurface > :is(.Question, .Answer, .SentenceList) {
+  border: 0;
+  border-radius: 0;
+  padding-inline: var(--surface-padding);
+}
+
+.JLPTSurface > .Question {
+  min-height: 4.5rem;
+  padding-block: 0.75em;
+}
+
+.JLPTSurface > .Answer {
+  padding-top: 0.2em;
+  padding-bottom: 0.75em;
+}
+
+.JLPTSurface > .Top {
+  padding-inline: var(--surface-padding);
+}
+
+.JLPTSurface > [data-jlpt-focused] {
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.JLPTSurface > .Answer + .SentenceList:has(.Sentence) {
+  border-top: 1px solid var(--border-subtle);
+}
+
+.JLPTQuestion {
+  flex-direction: column;
+  gap: 0.4em;
+}
+
+.JLPTCue {
+  color: var(--fg-subtle);
+  font-size: var(--text-sm);
+}
+
+.JLPTPrompt {
+  font-size: var(--text-2xl);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+
+.JLPTPrompt b,
+#cloze .current-cloze {
+  color: var(--fg-highlight-orange);
+  font-weight: 700;
+}
+
+.JLPTCard :is(.JLPTPrompt b, .SentFurigana b, .SentFurigana strong, #cloze .current-cloze) {
+  text-decoration-line: var(--jlpt-target-decoration, none);
+  text-underline-offset: 0.13em;
+}
+
+#cloze:not(.show) {
+  visibility: hidden;
+}
+
+.JLPTSurface > .JLPTInput,
+.JLPTSurface > .JLPTHint {
+  text-align: center;
+  padding: 0 var(--surface-padding) 0.75em;
+}
+
+.JLPTInput input#typeans {
+  width: min(100%, 18rem);
+  min-height: 2rem;
+  padding: 0.3em 0.6em;
+  border: 1px solid var(--jlpt-control-border);
+  border-radius: var(--border-radius);
+  background: var(--canvas-elevated);
+  color: var(--fg);
+  font: inherit;
+}
+
+.JLPTSurface :is(input#typeans, .replay-button, .Search):focus-visible {
+  outline: 2px solid var(--fg-highlight-orange);
+  outline-offset: 2px;
+}
+
+.JLPTInput .typeGood {
+  color: var(--jlpt-type-good-ink);
+  background: var(--jlpt-type-good-paper);
+}
+
+.JLPTInput .typeBad {
+  color: var(--jlpt-type-bad-ink);
+  background: var(--jlpt-type-bad-paper);
+}
+
+.JLPTInput .typeMissed {
+  color: var(--fg);
+  background: var(--jlpt-type-missed-paper);
+}
+
+.JLPTInput {
+  display: var(--jlpt-input-display, block);
+}
+
+.JLPTInput:empty {
+  display: none;
+}
+
+#BackSide .JLPTInput {
+  padding-top: 0.55em;
+}
+
+.JLPTReplay button {
+  cursor: pointer;
+}
+
+.JLPTReplay {
+  display: flex;
+  align-items: center;
+  gap: 0.35em;
+}
+
+.JLPTReplay button.replay-button {
+  appearance: none;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.JLPTCard .SentenceList {
+  min-height: 0;
+}
+
+.JLPTCard .SentenceList:not(:has(.Sentence)) {
+  display: none;
+}
+
+.JLPTCard [hidden] {
+  display: none !important;
+}
+
+.JLPTSynonym {
+  color: var(--fg-highlight-teal);
+}
+
+.JLPTOpposite {
+  color: var(--fg-highlight-blue);
+}
