@@ -31,7 +31,7 @@ UPSTREAM_FIELDS = (
     for field in ("Type", "Kanji", "Furigana", "DefSC", "DefTC", "Audio")
 ] + ["Order", "Alt1", "Alt2"]
 
-PREVIEW_NAME = "JLPT Listening · 模板预览"
+PREVIEW_NAME = "egg rolls JLPT · 例句听力预览"
 
 # Explicit preview examples exercise the template inputs independently of the
 # full-deck generation rules.

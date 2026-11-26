@@ -26,7 +26,7 @@ import unicodedata
 from anki.collection import Collection
 from anki.import_export_pb2 import ImportAnkiPackageOptions, ImportAnkiPackageRequest
 
-from build_deck import DECK_NAME, MODEL_NAME
+from build_deck import DECK_NAME, MODEL_NAME, PREVIOUS_DECK_NAME
 from cloze_hints import CLOZE, hint_text_for
 from deck_rules import example, japanese, plain, reading, sound_names
 
@@ -367,6 +367,11 @@ def import_package(database, package, legacy_model):
     try:
         options = ImportAnkiPackageOptions(merge_notetypes=False, with_scheduling=False, with_deck_configs=False)
         collection.import_anki_package(ImportAnkiPackageRequest(package_path=str(package), options=options))
+        if not collection.decks.by_name(DECK_NAME):
+            previous = collection.decks.by_name(PREVIOUS_DECK_NAME)
+            if not previous:
+                raise ValueError(f"Imported package does not contain {DECK_NAME}")
+            collection.decks.rename(previous, DECK_NAME)
         legacy_root = next((deck for deck in collection.decks.all() if deck["name"] == legacy_model), None)
         if not legacy_root:
             return {}

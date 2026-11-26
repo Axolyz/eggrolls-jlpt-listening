@@ -1,16 +1,18 @@
-# JLPT 例句听力 · 和色版
+# egg rolls JLPT · 例句听力版
 
-基于 egg rolls 的 `26.11.20` 版，优先用有音频的第一条例句训练听力，按读音、用法和中文词义干扰加开文字卡。可练形→音、句中词义、自他配对和搭配完形。全量开卡规则见 [DECK-RULES.md](DECK-RULES.md)。
+这是 egg rolls 的《JLPT N1～N5 一万词 Anki 牌组》`26.11.20` 的衍生版。优先用有音频的第一条例句训练听力，并按读音、用法和中文词义干扰加开文字卡。可练形→音、句中词义、自他配对和搭配完形。 [上游 5mdld/anki-jlpt-decks](https://github.com/5mdld/anki-jlpt-decks) · [开卡规则](DECK-RULES.md)
 
 日间用真朱和鸟之子纸色，夜间用珊瑚朱和深靛蓝。Anki 卡面跟随客户端的日夜模式。 [NIPPON COLORS 日本の伝統色](https://nipponcolors.com/)
 
 ## 下载和导入
 
-下载发行页里的 `jlpt-listening.apkg`，用 Anki 打开。第一次导入包含约 334 MB 的媒体。 [下载最新版](https://github.com/Axolyz/anki-jlpt-listening/releases/latest)
+下载发行页里的 `eggrolls-jlpt-listening.apkg`，用 Anki 打开。第一次导入包含约 334 MB 的媒体。 [下载最新版](https://github.com/Axolyz/eggrolls-jlpt-listening/releases/latest)
+
+已安装旧名称「JLPT 例句听力 · 和色版」的用户，可以在 Anki 把该总牌组改名为「egg rolls JLPT · 例句听力版」，再导入新版。请保留现有笔记类型，以便 Anki 识别已有的笔记。
 
 ## 从上游构建
 
-需要 Git 和 uv。构建使用独立的临时 Anki 数据库。生成的 `dist/jlpt-listening.apkg` 可在 Anki 里作为独立牌组导入，包含音频和字体。
+需要 Git 和 uv。构建使用独立的临时 Anki 数据库。生成的 `dist/eggrolls-jlpt-listening.apkg` 可在 Anki 里作为独立牌组导入，包含音频和字体。
 
 ```sh
 git clone --depth 1 --branch 26.11.20 https://github.com/5mdld/anki-jlpt-decks.git ../anki-jlpt-decks
@@ -50,4 +52,4 @@ uv run preview.py --upstream ../anki-jlpt-decks
 
 ## 来源
 
-原牌组作者为 egg rolls。和色版沿用原始词汇与媒体，并为听力、词义辨析和完形修改了卡片模板、样式与开卡规则。原牌组适用 CC BY-NC 4.0，详见 [原牌组许可](UPSTREAM-LICENSE.txt)。完形使用 Matthew Hayes 的 Cloze Anything v0.3，适用 Apache 2.0。两套许可随构建包附带。 [egg rolls JLPT 牌组](https://github.com/5mdld/anki-jlpt-decks) · [Cloze Anything](https://github.com/matthayes/anki_cloze_anything/releases/tag/v0.3)
+原牌组作者为 egg rolls。本衍生版沿用原始词汇与媒体，并为听力、词义辨析和完形修改了卡片模板、样式与开卡规则。原牌组适用 CC BY-NC 4.0，详见 [原牌组许可](UPSTREAM-LICENSE.txt)。完形使用 Matthew Hayes 的 Cloze Anything v0.3，适用 Apache 2.0。两套许可随构建包附带。 [egg rolls JLPT 牌组](https://github.com/5mdld/anki-jlpt-decks) · [Cloze Anything](https://github.com/matthayes/anki_cloze_anything/releases/tag/v0.3)

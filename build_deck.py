@@ -18,8 +18,10 @@ from deck_rules import CardRules
 from preview import export_deck, install_media, install_model, make_note, source_rows
 
 
-DECK_NAME = "JLPT 例句听力 · 和色版"
-MODEL_NAME = f"{DECK_NAME}（例句优先）"
+PREVIOUS_DECK_NAME = "JLPT 例句听力 · 和色版"
+DECK_NAME = "egg rolls JLPT · 例句听力版"
+# Maintain the same note type and GUIDs when users update an existing install.
+MODEL_NAME = f"{PREVIOUS_DECK_NAME}（例句优先）"
 GUID_NAMESPACE = "anki-jlpt-listening:full:v1"
 EDITORIAL = Path(__file__).with_name("editorial.json")
 
@@ -47,7 +49,7 @@ def build(upstream, output, audit_file):
                 decks[original] = collection.decks.id(f"{DECK_NAME}::{levels}")
             deck = collection.decks.get(root)
             deck["desc"] = (
-                '基于 egg rolls 的日语 JLPT 词汇牌组，针对例句听力调整开卡、排版与完形。'
+                '由 egg rolls 的 JLPT N1～N5 一万词 Anki 牌组衍生，优先训练例句听力。'
                 '<br><a href="https://github.com/5mdld/anki-jlpt-decks">原牌组与 CC BY-NC 4.0 授权</a>'
             )
             collection.decks.save(deck)
@@ -85,7 +87,7 @@ def build(upstream, output, audit_file):
 if __name__ == "__main__":
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--upstream", required=True, type=Path)
-    parser.add_argument("--out", type=Path, default=Path("dist/jlpt-listening.apkg"))
+    parser.add_argument("--out", type=Path, default=Path("dist/eggrolls-jlpt-listening.apkg"))
     parser.add_argument("--audit", type=Path, default=Path("dist/deck-audit.json"))
     args = parser.parse_args()
     build(args.upstream.resolve(), args.out.resolve(), args.audit.resolve())
