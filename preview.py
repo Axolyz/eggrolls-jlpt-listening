@@ -177,13 +177,13 @@ def make_note(collection, model, values, tags, filenames, namespace):
     return entry
 
 
-def export_deck(collection, upstream, deck_id, output):
+def export_deck(collection, upstream, deck_id, output, *, with_deck_configs=False):
     output.parent.mkdir(parents=True, exist_ok=True)
     with TemporaryDirectory(prefix=".jlpt-export-", dir=output.parent) as stage:
         package_path = Path(stage) / "deck.apkg"
         collection.export_anki_package(
             out_path=str(package_path),
-            options=ExportAnkiPackageOptions(with_media=True),
+            options=ExportAnkiPackageOptions(with_media=True, with_deck_configs=with_deck_configs),
             limit=DeckIdLimit(deck_id),
         )
         with ZipFile(package_path, "a") as package:

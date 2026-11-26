@@ -157,7 +157,7 @@ class CardRules:
         else:
             self.record(note, "reading-homograph-without-example")
 
-    def meaning(self, note, tags, result, ordinary, edits):
+    def meaning(self, note, result, ordinary, edits):
         if edits.get("word_meaning"):
             if ordinary:
                 raise ValueError(f"A sentence is available for word-meaning override {note['NoteID']}")
@@ -174,27 +174,6 @@ class CardRules:
                 result[f"TargetDefSC{slot}"] = escape(item["sc"])
                 result[f"TargetDefTC{slot}"] = escape(item["tc"])
             return
-        head = japanese(note["VocabKanji"])
-        if not (re.match(HIRAGANA, head) and re.search(KANJI, head)):
-            return
-        if any(tag.split("::")[-1] in {"外", "カタカナ語"} for tag in tags):
-            return
-        if not ordinary:
-            if len(senses(note["VocabDefSC"])) == 1:
-                result["WordMeaning"] = "1"
-            return
-        slot = ordinary[0]
-        if not HIGHLIGHT.search(example(note, slot)):
-            self.record(note, "meaning-missing-target", slot=slot)
-            return
-        if len(senses(note["VocabDefSC"])) > 1:
-            if compact(plain(note[f"SentDefSC{slot}"])) in {compact(gloss) for gloss in senses(note["VocabDefSC"])}:
-                result[f"TargetDefSC{slot}"] = note[f"SentDefSC{slot}"]
-                result[f"TargetDefTC{slot}"] = note[f"SentDefTC{slot}"]
-            else:
-                self.record(note, "mixed-writing-needs-target-gloss", slot=slot)
-                return
-        result[f"Meaning{slot}"] = "1"
 
     def paired_verbs(self, note):
         expected = {"自動": {"他動", "自他動"}, "他動": {"自動", "自他動"}, "自他動": {"自動", "他動"}}
@@ -270,7 +249,7 @@ class CardRules:
             result = dict(note, Alt1="", Alt2="")
             self.listening(note, result, ordinary, edits)
             self.reading_card(note, tags, result, ordinary, edits)
-            self.meaning(note, tags, result, ordinary, edits)
+            self.meaning(note, result, ordinary, edits)
             self.cloze(note, result, ordinary, edits)
             for slot in ordinary:
                 if result.get(f"Listening{slot}"):

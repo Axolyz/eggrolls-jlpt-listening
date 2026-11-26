@@ -16,6 +16,7 @@ from anki.collection import AddNoteRequest, Collection
 from card_templates import CardTemplates
 from deck_rules import CardRules
 from preview import export_deck, install_media, install_model, make_note, source_rows
+from study_order import install_study_preset, order_new_cards
 
 
 PREVIOUS_DECK_NAME = "JLPT 例句听力 · 和色版"
@@ -61,6 +62,8 @@ def build(upstream, output, audit_file):
                     AddNoteRequest(make_note(collection, model, note, tags, filenames, GUID_NAMESPACE), decks[original])
                     for original, note, tags in group
                 ])
+            order_new_cards(collection, model)
+            install_study_preset(collection, (root, *decks.values()))
             counts = dict(collection.db.all("select ord, count(*) from cards group by ord"))
             templates = {item["name"]: counts.get(item["ord"], 0) for item in model["tmpls"]}
             if collection.note_count() != len(rows) or collection.db.scalar(
@@ -72,7 +75,7 @@ def build(upstream, output, audit_file):
             if collection.db.scalar("select count(*) from revlog"):
                 raise ValueError("A public package must not contain review progress")
             print(f"Exporting {sum(counts.values()):,} cards to {output}", flush=True)
-            export_deck(collection, upstream, root, output)
+            export_deck(collection, upstream, root, output, with_deck_configs=True)
         finally:
             collection.close()
     audit_file.parent.mkdir(parents=True, exist_ok=True)
