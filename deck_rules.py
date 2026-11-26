@@ -1,6 +1,6 @@
 """Select cards using upstream examples and verified editorial exceptions."""
 
-from collections import Counter, defaultdict
+from collections import defaultdict
 from hashlib import sha256
 from html import escape, unescape
 import re
@@ -67,15 +67,6 @@ def senses(markup):
 def label(part_of_speech):
     match = re.search(r"自他動|自動|他動", plain(part_of_speech))
     return match[0] if match else ""
-
-
-def focus_position(text):
-    marks = list(HIGHLIGHT.finditer(text))
-    if len(marks) != 1:
-        return None
-    mark = marks[0]
-    before, inside, after = map(japanese, (text[:mark.start()], mark[1], text[mark.end():]))
-    return len(before), len(inside), len(after)
 
 
 class CardRules:
@@ -289,26 +280,13 @@ class CardRules:
             output.append((deck, result, tags))
         if unapplied := self.editor.keys() - applied:
             raise ValueError(f"Editorial notes missing upstream: {sorted(unapplied)}")
-        self.distinguish_shared_audio(sightings)
+        self.record_shared_audio(sightings)
         return output
 
-    def distinguish_shared_audio(self, sightings):
+    def record_shared_audio(self, sightings):
         for used in sightings.values():
             if len(used) < 2:
                 continue
-            positions = [focus_position(example(note, slot)) for note, slot in used]
-            repeats = Counter(positions)
-            for (note, slot), position in zip(used, positions, strict=True):
-                self.record(note, "shared-listening-audio", slot=slot, peers=[japanese(peer["VocabKanji"]) for peer, _ in used])
-                if position is None or repeats[position] > 1:
-                    continue
-                before, length, after = position
-                if not before and not after:
-                    sc, tc = "留意整个表达", "留意整個表達"
-                elif not before:
-                    sc, tc = f"留意开头的词（{length} 字）", f"留意開頭的詞（{length} 字）"
-                elif not after:
-                    sc, tc = f"留意结尾的词（{length} 字）", f"留意結尾的詞（{length} 字）"
-                else:
-                    sc, tc = f"留意中间的词（{length} 字）", f"留意中間的詞（{length} 字）"
-                note[f"ListeningHintSC{slot}"], note[f"ListeningHintTC{slot}"] = sc, tc
+            peers = [japanese(note["VocabKanji"]) for note, _ in used]
+            for note, slot in used:
+                self.record(note, "shared-listening-audio", slot=slot, peers=peers)

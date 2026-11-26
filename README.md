@@ -19,7 +19,7 @@ git clone --depth 1 --branch 26.11.20 https://github.com/5mdld/anki-jlpt-decks.g
 uv run build_deck.py --upstream ../anki-jlpt-decks
 ```
 
-每次构建按上游的 `NoteID` 重算开关，保留等级和频率子牌组。可复用的人工校订集中在 `editorial.json`，绑定词条和用例。构建会检查人工选中的例句是否仍匹配，生成 `dist/deck-audit.json`，记录候选义项多于可用录音、重复录音、词音兜底等情况。牌组使用独立的笔记类型和稳定的笔记 GUID，便于后续导入新版。发布包无个人复习记录。
+每次构建按上游的 `NoteID` 重算开关，保留等级和频率子牌组。可复用的人工校订集中在 `editorial.json`，绑定词条和用例。构建会检查人工选中的例句是否仍匹配，生成 `dist/deck-audit.json`，记录候选义项多于可用录音、词条共用录音、词音兜底等情况。牌组使用独立的笔记类型和稳定的笔记 GUID，便于后续导入新版。发布包无个人复习记录。
 
 模板预览有 11 条笔记、29 张卡和 16 种模板，适合在独立的预览牌组中检查样式。
 
