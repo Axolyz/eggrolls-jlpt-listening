@@ -1,0 +1,73 @@
+/* Shared desktop review controls. */
+:is(.JLPTReplay, .GrammarAudio) .replay-button {
+  display: inline-grid;
+  place-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  box-sizing: border-box;
+  margin: 0;
+  vertical-align: middle;
+}
+
+:is(.JLPTInput, .GrammarType) input#typeans:focus-visible,
+:is(.JLPTReplay, .GrammarAudio) .replay-button:focus-visible,
+:is(.JLPTCard, .GrammarCard) .LocalRemarks button:focus-visible {
+  outline: 2px solid var(--fg-highlight-orange);
+  outline-offset: 3px;
+}
+
+:is(.JLPTInput, .GrammarType) :is(.typeGood, .typeBad, .typeMissed) {
+  padding: 0.1em 0.24em;
+  border-radius: 0.22em;
+}
+:is(.JLPTInput, .GrammarType) .typeGood { color: var(--jlpt-type-good-ink); background: var(--jlpt-type-good-paper); }
+:is(.JLPTInput, .GrammarType) .typeBad { color: var(--jlpt-type-bad-ink); background: var(--jlpt-type-bad-paper); }
+:is(.JLPTInput, .GrammarType) .typeMissed { color: var(--fg); background: var(--jlpt-type-missed-paper); }
+
+.JLPTSurface > .JLPTMoreExamples {
+  border-top: 1px solid var(--border-subtle);
+}
+.JLPTMoreExamples:not(:has(.Sentence)) { display: none; }
+.JLPTMoreExamples > summary {
+  padding: 0.7em var(--surface-padding, 1em);
+  color: var(--fg-subtle);
+  cursor: pointer;
+}
+.JLPTMoreExamples > .SentenceList {
+  border: 0;
+  padding-inline: var(--surface-padding, 1em);
+}
+
+.LocalRemarks {
+  margin-block: 0.5em;
+  font-size: 0.9em;
+  color: var(--fg-subtle);
+}
+.GrammarCard > .LocalRemarks { margin-block: 1em 0.5em; }
+.LocalRemarks p { margin: 0 0 0.35em; }
+.LocalRemarks button {
+  background: transparent;
+  border: 0;
+  color: var(--fg-highlight-blue);
+  font: inherit;
+  cursor: pointer;
+  padding: 0.25em 0;
+}
+
+/* Expanded cloze hints */
+.JLPTSurface > .JLPTHint[data-cloze-hint] {
+  width: fit-content;
+  max-width: min(38rem, calc(100% - 2 * var(--surface-padding, 1em)));
+  box-sizing: border-box;
+  margin: 0 auto 0.75em;
+  padding: 0.55em 0.85em;
+  border-inline-start: 2px solid var(--fg-highlight-orange);
+  border-radius: 0 7px 7px 0;
+  background: var(--canvas-elevated);
+  color: var(--fg-subtle);
+  text-align: start;
+  line-height: 1.6;
+}
+
+.JLPTClozeHintLine { display: block; }
+.JLPTClozeHintLine + .JLPTClozeHintLine { margin-top: 0.2em; }

@@ -1,0 +1,18 @@
+/* Real GenWan semibold. Synthetic weight produces hollow glyphs in Chromium. */
+@font-face {
+  font-family: 'GenWanMin2 JP';
+  src: url('_genwanmin2jp-sb.otf') format('opentype');
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'GenWanMin2 TW';
+  src: url('_genwanmin2tw-sb.otf') format('opentype');
+  font-weight: 600;
+  font-display: swap;
+}
+
+.card {
+  font-synthesis-weight: none;
+}

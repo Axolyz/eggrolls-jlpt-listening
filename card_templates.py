@@ -2,6 +2,7 @@
 
 from pathlib import Path
 
+from card_fonts import with_genwan
 from cloze_hints import VISIBLE_HINT_CSS
 import re
 
@@ -16,7 +17,7 @@ REPLAY_ICON = (
 )
 
 EXTRA_FIELDS = [
-    "ReadingPrompt", "ReadingAnswer", "RemarkSC", "RemarkTC", "WordAudioFile",
+    "ReadingPrompt", "ReadingAnswer", "WordAudioFile",
     "WordListening", "WordMeaning", "WordHintSC", "WordHintTC",
     "ClozeText1", "ClozeHint1", "ClozeText2", "ClozeHint2",
     *(
@@ -135,10 +136,12 @@ class CardTemplates:
         )
         self.css = "\n".join((
             settings,
-            read_asset(folder, "styles.css"),
+            with_genwan(read_asset(folder, "styles.css")),
+            (TEMPLATES / "genwan.css").read_text(encoding="utf-8"),
             (TEMPLATES / "palette.css").read_text(encoding="utf-8"),
             (TEMPLATES / "additions.css").read_text(encoding="utf-8"),
             VISIBLE_HINT_CSS,
+            (TEMPLATES / "controls.css").read_text(encoding="utf-8"),
         ))
         # Reuse upstream platform dictionary mappings. Per-card display and playback
         # use their own controls, so upstream update notices and settings are omitted.
@@ -200,16 +203,15 @@ class CardTemplates:
             f'<h1 class="VocabKanji"><span lang="ja">{field("furigana:VocabKanji")}</span></h1>'
             f'<div class="VocabAudio">{word_audio_markup}</div></header>'
         )
-        note = section("RemarkSC", f'<h3 class="VocabPlus LabelIndent"><em lang="ja">［注］</em>{bilingual("RemarkSC", "RemarkTC")}</h3>')
-        definitions = self.answer_section.replace("</section>", note + "</section>")
         focus = ""
         if slot:
             sentence = self.example(slot, focus=listening, meaning=meaning)
             focus = f'<ul class="SentenceList" data-jlpt-focused>{sentence}</ul>'
         return wrap_side(
             "Back",
-            lead + focus + word + definitions
-            + f'<ul class="SentenceList JLPTExamples">{other_examples}</ul>',
+            lead + focus + word + self.answer_section
+            + '<details class="JLPTMoreExamples"><summary>其他例句</summary>'
+            + f'<ul class="SentenceList JLPTExamples">{other_examples}</ul></details>',
         )
 
     def make(self, name, gate, front, back, *, required=None, cloze=False):

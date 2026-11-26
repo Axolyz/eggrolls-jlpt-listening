@@ -17,9 +17,10 @@ from zipfile import ZipFile
 from anki.collection import Collection, DeckIdLimit
 from anki.import_export_pb2 import ExportAnkiPackageOptions
 
+from card_fonts import FONT_ASSETS, FONT_LICENSE, font_asset
 from card_templates import CardTemplates, CLOZE_ORDINALS, EXTRA_FIELDS, SLOTS, TEMPLATES
 from deck_rules import SOUND, japanese
-from cloze_hints import CLOZE, author_hint, cloze_parts, pack_hints, pair_hint
+from cloze_hints import CLOZE, load_cloze_reviews, reviewed_hints
 
 
 UPSTREAM_FIELDS = (
@@ -47,8 +48,6 @@ SAMPLES = {
     },
     "電話": {
         "Listening1": "1", "Listening2": "1",
-        "ClozeText1": "電話((c2::を))((c1::かける))", "ClozeHint1": "打电话",
-        "ClozeText2": "電話((c2::に))((c1::出る))", "ClozeHint2": "接电话",
         "Cloze1First": "1", "Cloze1Second": "1",
         "Cloze2First": "1", "Cloze2Second": "1",
     },
@@ -56,8 +55,6 @@ SAMPLES = {
     "図書館": {"Listening1": "1", "ReadExample": 1, "Alt2": "1"},
     "落ちる": {
         "Listening1": "1", "Cloze1First": "1",
-        "ClozeText1": "山[やま]の 上[うえ]から 石[いし]が((c1::落[お]ち))てきた",
-        "ClozeHint1": "落ちる／落とす",
     },
     "きちんと": {"Listening1": "1", "Listening3": "1", "Listening4": "1"},
     "サービス": {
@@ -94,18 +91,15 @@ def set_cloze_answers(values):
 
 
 def set_preview_hints(values):
+    if not values.get("Cloze1First"):
+        return
+    reviews = load_cloze_reviews()
     for group in (1, 2):
-        text = values.get(f"ClozeText{group}", "")
-        key = f"ClozeHint{group}"
-        hint = values.get(key, "")
-        if not text or not hint or hint.startswith("<span data-jlpt-answer-hint="):
+        if not values.get(f"Cloze{group}First"):
             continue
-        parts = cloze_parts(text, japanese)
-        if values["VocabKanji"] == "落ちる":
-            values[key] = pair_hint(parts, "石头从山上掉下来", head="落ちる",
-                                    role="自動", alternatives=["落とす"], reading="おちる")
-        else:
-            values[key] = pack_hints(parts, hint, lambda target, raw, after: author_hint(text, target))
+        review = reviews[(values["NoteID"], group)]
+        values[f"ClozeText{group}"] = review["prompt"]
+        values[f"ClozeHint{group}"] = reviewed_hints(review["prompt"], review, japanese)
 
 
 def source_rows(path):
@@ -136,10 +130,11 @@ def install_media(collection, source, layout, notes):
     for values in notes:
         for name in ("VocabAudio", *(f"SentAudio{i}" for i in SLOTS)):
             media.update(SOUND.findall(values[name]))
-    return {
-        name: collection.media.write_data(name, (source / "medias" / name).read_bytes())
-        for name in sorted(media)
-    }
+    filenames = {}
+    for name in sorted(media):
+        path = font_asset(name) if name in FONT_ASSETS else source / "medias" / name
+        filenames[name] = collection.media.write_data(name, path.read_bytes())
+    return filenames
 
 
 def install_model(collection, layout, name, filenames):
@@ -188,6 +183,7 @@ def export_deck(collection, upstream, deck_id, output, *, with_deck_configs=Fals
         )
         with ZipFile(package_path, "a") as package:
             package.write(upstream / "LICENSE", "licenses/eggrolls-LICENSE.txt")
+            package.write(font_asset(FONT_LICENSE), "licenses/genwan-OFL-1.1.txt")
             for filename in ("Apache-2.0.txt", "NOTICE.txt"):
                 package.write(TEMPLATES / "vendor" / filename, f"licenses/cloze-anything-{filename}")
             package.writestr(
@@ -195,7 +191,9 @@ def export_deck(collection, upstream, deck_id, output, *, with_deck_configs=Fals
                 "Modified from the egg rolls JLPT deck under CC BY-NC 4.0.\n"
                 "https://github.com/5mdld/anki-jlpt-decks\n\n"
                 "Cloze Anything v0.3 by Matthew Hayes, Apache-2.0.\n"
-                "https://github.com/matthayes/anki_cloze_anything/releases/tag/v0.3\n",
+                "https://github.com/matthayes/anki_cloze_anything/releases/tag/v0.3\n\n"
+                "GenWan Serif v2.100 by ButTaiwan, SIL Open Font License 1.1.\n"
+                "https://github.com/ButTaiwan/genwan-font/releases/tag/v2.100\n",
             )
         package_path.replace(output)
 

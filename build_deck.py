@@ -19,10 +19,9 @@ from preview import export_deck, install_media, install_model, make_note, source
 from study_order import install_study_preset, order_new_cards
 
 
-PREVIOUS_DECK_NAME = "JLPT 例句听力 · 和色版"
 DECK_NAME = "egg rolls JLPT · 例句听力版"
 # Maintain the same note type and GUIDs when users update an existing install.
-MODEL_NAME = f"{PREVIOUS_DECK_NAME}（例句优先）"
+MODEL_NAME = "JLPT 例句听力 · 和色版（例句优先）"
 GUID_NAMESPACE = "anki-jlpt-listening:full:v1"
 EDITORIAL = Path(__file__).with_name("editorial.json")
 

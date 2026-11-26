@@ -47,6 +47,22 @@ for (const sentence of card.querySelectorAll("[data-jlpt-type]")) {
   if (symbol === "対") expression.classList.add("JLPTOpposite");
 }
 
+// Format only the cue for the active cloze.
+for (const hint of card.querySelectorAll(".JLPTHint[data-cloze-hint]")) {
+  const cue = hint.querySelector(`[data-jlpt-answer-hint="${hint.dataset.clozeHint}"]`);
+  if (!cue) continue;
+  const text = cue.textContent.trim();
+  const lines = text.split(/(?=第\s*\d+\s*空\s)/);
+  if (lines.length > 1) {
+    cue.replaceChildren(...lines.filter(line => line.trim()).map(line => {
+      const row = document.createElement("span");
+      row.className = "JLPTClozeHintLine";
+      row.textContent = line.trim();
+      return row;
+    }));
+  }
+}
+
 const controls = card.querySelectorAll("[data-jlpt-audio]");
 if (!controls.length) return;
 const configuredRate = Number(style.getPropertyValue("--jlpt-replay-rate"));

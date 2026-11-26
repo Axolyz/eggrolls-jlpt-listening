@@ -1,57 +1,37 @@
 # egg rolls JLPT · 例句听力版
 
-这是 egg rolls 的《JLPT N1～N5 一万词 Anki 牌组》`26.11.20` 的衍生版。优先用有音频的第一条例句训练听力，并按读音、用法和中文词义干扰加开文字卡。可练形→音、句中词义、自他配对和搭配完形。 [上游 5mdld/anki-jlpt-decks](https://github.com/5mdld/anki-jlpt-decks) · [开卡规则](DECK-RULES.md)
+基于 [egg rolls 的 JLPT N1–N5 一万词牌组](https://github.com/5mdld/anki-jlpt-decks)。这版把例句作为听力的基本单位。先听懂这句话，再看目标词在这个语境里怎么用。一个词有几种常见搭配，就有机会分别听到它们。
 
-日间用真朱和鸟之子纸色，夜间用珊瑚朱和深靛蓝。Anki 卡面跟随客户端的日夜模式。 [NIPPON COLORS 日本の伝統色](https://nipponcolors.com/)
+| 日间 · 听力题面 | 夜间 · 词义答案 |
+| --- | --- |
+| ![只显示播放按钮的听力卡](assets/listening.png) | ![適当在例句里表示敷衍](assets/meaning.png) |
 
-## 下载和导入
+## 怎么学
 
-下载发行页里的 `eggrolls-jlpt-listening.apkg`，用 Anki 打开。第一次导入包含约 334 MB 的媒体。 [下载最新版](https://github.com/Axolyz/eggrolls-jlpt-listening/releases/latest)
+- **音→意**覆盖有录音的普通例句。同一个词的不同搭配可以各练一次。翻面先显示刚听到的日文与译文。
+- **形→音**练看见写法后读出目标词。题面保留原句里的活用，参考答案使用辞书形。
+- **形→意**只挑值得单独辨认的词义。例如「適当」表示「适宜」时可以借中文理解，表示「敷衍」时才单独出题。
+- **完形**练少数自他用法和搭配。例句和提示按题校订，能用原句语境区分答案的题优先保留。
 
-已安装旧名称「JLPT 例句听力 · 和色版」的用户，可以在 Anki 把该总牌组改名为「egg rolls JLPT · 例句听力版」，再导入新版。请保留现有笔记类型，以便 Anki 识别已有的笔记。
+同一词条的新卡按文字、听力、完形排列。没有必要单独考写法或词义的词可以从听力开始。具体开卡条件见 [开卡规则](DECK-RULES.md)。
 
-同一词条的新卡顺序为文字、听力、完形。首次导入时勾选「导入牌组选项预设」，以使用包内的「egg rolls JLPT · 新卡顺序」预设和埋藏同笔记新卡的设置。已有牌组可继续使用自己的预设，按牌组或升序位置收集新卡，并开启埋藏同笔记新卡，即可按此顺序初学。
+## 导入与设置
 
-## 从上游构建
+打开构建生成的 `dist/eggrolls-jlpt-listening.apkg`。导入时可勾选「导入牌组选项预设」，使用包内的新卡顺序。牌组包含录音和字体。
 
-需要 Git 和 uv。构建使用独立的临时 Anki 数据库。生成的 `dist/eggrolls-jlpt-listening.apkg` 可在 Anki 里作为独立牌组导入，包含音频和字体。
+在「卡片模板 → 样式」顶部可设置简繁、输入框、播放速度和日夜配色。白天默认真朱，夜间默认紺 × 珊瑚朱。文字使用源雲明體月版和源雲明朝。桌面用户还可以安装 [倍速插件源码](desktop_audio_speed.py)，让原生自动播放读取同一个速度设置。
+
+## 跟随上游构建
+
+需要 Git 和 uv。当前校订以 egg rolls 的 `26.11.20` 为基准。
 
 ```sh
 git clone --depth 1 --branch 26.11.20 https://github.com/5mdld/anki-jlpt-decks.git ../anki-jlpt-decks
 uv run build_deck.py --upstream ../anki-jlpt-decks
 ```
 
-每次构建按上游的 `NoteID` 重算开关，保留等级和频率子牌组。可复用的人工校订集中在 `editorial.json`，绑定词条和用例。构建会检查人工选中的例句是否仍匹配，生成 `dist/deck-audit.json`，记录候选义项多于可用录音、词条共用录音、词音兜底等情况。牌组使用独立的笔记类型和稳定的笔记 GUID，便于后续导入新版。发布包无个人复习记录。
-
-模板预览有 11 条笔记、29 张卡和 16 种模板，适合在独立的预览牌组中检查样式。
-
-```sh
-uv run preview.py --upstream ../anki-jlpt-decks
-```
-
-## 迁移旧魔改版的进度
-
-`migrate_progress.py` 默认在集合副本上试跑。它按 `NoteID` 和实际考点匹配，听力额外核对录音内容。可查阅的本地报告列出旧卡、可选的新卡和匹配失败的原因。确认试跑结果后，在关闭 Anki 的情况下用 `--apply` 向目标集合导入并复制确定匹配的进度。脚本会在写入前生成集合备份。同一份历史会暂时出现在新旧卡上，裁决完成后可以在 Anki 里处理旧牌组。
-
-## 全局设置
-
-在 Anki 打开预览牌组任一卡片的「卡片模板 → 样式」，修改顶部的共用设置。
-
-- `--jlpt-language` 默认 `zh-Hans`，可改为 `zh-Hant`。
-- `--jlpt-input-display` 默认 `block`，显示形→音、形→意和完形的输入及对照。改成 `none` 可隐藏。形→意的输入对照以简中答案为基准，同义表述照常自评。
-- `--jlpt-replay-rate` 默认 `1`，可改成 `0.9` 或 `1.15`。点击卡片播放图标使用这个倍率。Anki 原生自动播放和原生播放快捷键由客户端播放器管理。
-- `--jlpt-day-theme` 默认 `shinsyu`（真朱）。另一套日间主题是 `sumi-paper`（墨と紙）。
-- `--jlpt-night-theme` 默认 `kon`（紺 × 珊瑚朱）。其他夜间主题及其代号列在样式顶部。例如改成 `ink-byakugun` 就会在夜间使用「墨 × 白群」。
-
-日间和夜间各选一套，Anki 根据客户端模式切换。同一笔记类型的所有卡片共用设置。
-
-## 模板字段
-
-- `Listening1`–`Listening4`、`WordListening` 控制听力卡。正常听力的正面只有题意和音频，反面首先显示所听例句。
-- `ReadingPrompt` 与 `ReadingAnswer` 指定形→音题面和辞书形读音。模板使用 Anki 的输入对照。
-- `Meaning1`–`Meaning4`、`WordMeaning` 可独立开形→意。例句背面显示完整译文；`TargetDefSCN` 用于句中词义的输入对照，支持部分匹配。例句缺译文时，可用 `TargetDefSCN` 和 `TargetDefTCN` 显示目标义。
-- 第一、第二组完形支持 `((c1::…))` 和 `((c2::…))`。构建时按空位生成对应的 `Cloze…Answer`，同编号有多处空位时按顺序用 `／` 隔开。手动编辑完形时也要同步相应的答案字段。完形的提示默认可见。自他题用配对词、自动或他动用法及原句的写法限定要填的词；需要补写法时优先给首辅音或首假名。手动填写 `ClozeHint1` 或 `ClozeHint2` 时，一段普通提示适用于整组，也可按空号分别写 `<span data-jlpt-answer-hint="1">…</span>` 和编号为 `2` 的一段。中→日由 `Alt2` 控制。
+[editorial.json](editorial.json) 保存按词条和例句核对过的文字卡决定。[cloze-review.tsv](cloze-review.tsv) 保存逐题定稿。构建会核对例句，输出 `dist/deck-audit.json`。公开构建包使用上游素材和项目校订，本机学习进度、个人备注保存在自己的 Anki 集合。
 
 ## 来源
 
-原牌组作者为 egg rolls。本衍生版沿用原始词汇与媒体，并为听力、词义辨析和完形修改了卡片模板、样式与开卡规则。原牌组适用 CC BY-NC 4.0，详见 [原牌组许可](UPSTREAM-LICENSE.txt)。完形使用 Matthew Hayes 的 Cloze Anything v0.3，适用 Apache 2.0。两套许可随构建包附带。 [egg rolls JLPT 牌组](https://github.com/5mdld/anki-jlpt-decks) · [Cloze Anything](https://github.com/matthayes/anki_cloze_anything/releases/tag/v0.3)
+词汇和录音来自 [egg rolls JLPT 牌组](https://github.com/5mdld/anki-jlpt-decks)，适用 [CC BY-NC 4.0](UPSTREAM-LICENSE.txt)。完形渲染使用 [Cloze Anything v0.3](https://github.com/matthayes/anki_cloze_anything)，适用 Apache 2.0。字体来自 [源雲字体](https://github.com/ButTaiwan/genwan-font)，适用 SIL Open Font License 1.1。配色参考 [NIPPON COLORS](https://nipponcolors.com/)。
