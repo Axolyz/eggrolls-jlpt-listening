@@ -1,6 +1,8 @@
 """Derive the listening note type from the upstream Japanese–Chinese layout."""
 
 from pathlib import Path
+
+from cloze_hints import VISIBLE_HINT_CSS
 import re
 
 
@@ -106,6 +108,11 @@ def require_match(pattern, source, description):
     return match
 
 
+def cloze_hint_markup(group, number):
+    return f'<p class="JLPTHint" data-cloze-hint="{number}">{field(f"ClozeHint{group}")}</p>'
+
+
+
 class CardTemplates:
     def __init__(self, upstream_source):
         folder = upstream_source / "templates"
@@ -131,6 +138,7 @@ class CardTemplates:
             read_asset(folder, "styles.css"),
             (TEMPLATES / "palette.css").read_text(encoding="utf-8"),
             (TEMPLATES / "additions.css").read_text(encoding="utf-8"),
+            VISIBLE_HINT_CSS,
         ))
         # Reuse upstream platform dictionary mappings. Per-card display and playback
         # use their own controls, so upstream update notices and settings are omitted.
@@ -263,7 +271,7 @@ class CardTemplates:
                     '<div class="JLPTPrompt" id="cloze" lang="ja" '
                     f'data-card="Cloze {number}">{field(f"kanji:ClozeText{group}")}</div>'
                 )
-                hint = section(f"ClozeHint{group}", f'<p class="JLPTHint">{field(f"ClozeHint{group}")}</p>')
+                hint = section(f"ClozeHint{group}", cloze_hint_markup(group, number))
                 answer = f"{gate}Answer"
                 typed = section(answer, typed_input(answer))
                 results.append(self.make(

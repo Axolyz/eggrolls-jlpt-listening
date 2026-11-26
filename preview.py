@@ -18,7 +18,8 @@ from anki.collection import Collection, DeckIdLimit
 from anki.import_export_pb2 import ExportAnkiPackageOptions
 
 from card_templates import CardTemplates, CLOZE_ORDINALS, EXTRA_FIELDS, SLOTS, TEMPLATES
-from deck_rules import SOUND
+from deck_rules import SOUND, japanese
+from cloze_hints import CLOZE, author_hint, cloze_parts, pack_hints, pair_hint
 
 
 UPSTREAM_FIELDS = (
@@ -70,7 +71,6 @@ SAMPLES = {
     },
 }
 CSS_MEDIA = re.compile(r"url\('([^']+)'\)")
-CLOZE = re.compile(r"\(\(c(\d+)::([\s\S]+?\)*)\)\)")
 
 
 def set_cloze_answers(values):
@@ -91,6 +91,21 @@ def set_cloze_answers(values):
             if not answers[number]:
                 raise ValueError(f"{values['VocabKanji']}: {gate} has no matching answer")
             values[f"{gate}Answer"] = escape("／".join(answers[number]), quote=False)
+
+
+def set_preview_hints(values):
+    for group in (1, 2):
+        text = values.get(f"ClozeText{group}", "")
+        key = f"ClozeHint{group}"
+        hint = values.get(key, "")
+        if not text or not hint or hint.startswith("<span data-jlpt-answer-hint="):
+            continue
+        parts = cloze_parts(text, japanese)
+        if values["VocabKanji"] == "落ちる":
+            values[key] = pair_hint(parts, "石头从山上掉下来", head="落ちる",
+                                    role="自動", alternatives=["落とす"], reading="おちる")
+        else:
+            values[key] = pack_hints(parts, hint, lambda target, raw, after: author_hint(text, target))
 
 
 def source_rows(path):
@@ -200,6 +215,7 @@ def build(upstream, output):
                 values, tags = samples[key]
                 values = values | custom
                 values["Alt2"] = custom.get("Alt2", "")
+                set_preview_hints(values)
                 entry = make_note(collection, model, values, tags, filenames, "jlpt-listening-preview")
                 collection.add_note(entry, deck_id)
 

@@ -27,8 +27,8 @@ from anki.collection import Collection
 from anki.import_export_pb2 import ImportAnkiPackageOptions, ImportAnkiPackageRequest
 
 from build_deck import DECK_NAME, MODEL_NAME
+from cloze_hints import CLOZE, hint_text_for
 from deck_rules import example, japanese, plain, reading, sound_names
-from preview import CLOZE
 
 
 LEGACY_MODEL = "eggrolls-JLPT10k-v3"
@@ -126,7 +126,7 @@ def prompt_for(card, media, legacy):
     if match := re.fullmatch(r"(\d)Cloze(\d)|完形 (\d) · c(\d)", name):
         group, number = map(int, (match[1], match[2]) if legacy else (match[3], match[4]))
         body = note[f"{group}Cloze"] if legacy else note[f"ClozeText{group}"]
-        hint = " ".join(filter(None, (plain(note[f"{group}ClozeDef"]), plain(note[f"{group}ClozeRemark"])))) if legacy else plain(note[f"ClozeHint{group}"])
+        hint = " ".join(filter(None, (plain(note[f"{group}ClozeDef"]), plain(note[f"{group}ClozeRemark"])))) if legacy else plain(hint_text_for(note[f"ClozeHint{group}"], number))
         shown, answer = cloze_answer(body, number)
         return Prompt("完形", shown, answer, hint)
     return Prompt(name, "", "")

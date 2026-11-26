@@ -6,6 +6,8 @@ from html import escape, unescape
 import re
 import unicodedata
 
+from cloze_hints import author_hint, cloze_parts, pack_hints, pair_hint
+
 
 SLOTS = range(1, 5)
 KANJI = r"[\u3400-\u4dbf\u4e00-\u9fff々〆〇]"
@@ -225,7 +227,11 @@ class CardRules:
         if "cloze" in edits:
             for group, item in enumerate(edits["cloze"], start=1):
                 result[f"ClozeText{group}"] = item["text"]
-                result[f"ClozeHint{group}"] = escape(item["hint"])
+                groups = cloze_parts(item["text"], japanese)
+                result[f"ClozeHint{group}"] = pack_hints(
+                    groups, item["hint"],
+                    lambda target, raw, after: author_hint(item["text"], target),
+                )
                 for number, ordinal in enumerate(("First", "Second"), start=1):
                     if f"((c{number}::" in item["text"]:
                         result[f"Cloze{group}{ordinal}"] = "1"
@@ -252,7 +258,10 @@ class CardRules:
             self.record(note, "cloze-unverified-target", slot=slot, target=target, pairs=pairs)
             return
         result["ClozeText1"] = text[:mark.start()] + f"((c1::{mark[1].strip()}))" + text[mark.end():]
-        result["ClozeHint1"] = escape(plain(note[f"SentDefSC{slot}"]))
+        result["ClozeHint1"] = pair_hint(
+            cloze_parts(result["ClozeText1"], japanese), plain(note[f"SentDefSC{slot}"]),
+            head=head, role=label(note["VocabPoS"]), alternatives=pairs, reading=reading(note["VocabFurigana"]),
+        )
         result["Cloze1First"] = "1"
 
     def select(self, rows):

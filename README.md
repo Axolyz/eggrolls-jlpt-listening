@@ -46,7 +46,7 @@ uv run preview.py --upstream ../anki-jlpt-decks
 - `Listening1`–`Listening4`、`WordListening` 控制听力卡。正常听力的正面只有题意和音频，反面首先显示所听例句。
 - `ReadingPrompt` 与 `ReadingAnswer` 指定形→音题面和辞书形读音。模板使用 Anki 的输入对照。
 - `Meaning1`–`Meaning4`、`WordMeaning` 可独立开形→意。例句背面显示完整译文；`TargetDefSCN` 用于句中词义的输入对照，支持部分匹配。例句缺译文时，可用 `TargetDefSCN` 和 `TargetDefTCN` 显示目标义。
-- 第一、第二组完形支持 `((c1::…))` 和 `((c2::…))`。构建时按空位生成对应的 `Cloze…Answer`，同编号有多处空位时按顺序用 `／` 隔开。手动编辑完形时也要同步相应的答案字段。自他配对可在 `ClozeHint1` 或 `ClozeHint2` 里列出候选。中→日由 `Alt2` 控制。
+- 第一、第二组完形支持 `((c1::…))` 和 `((c2::…))`。构建时按空位生成对应的 `Cloze…Answer`，同编号有多处空位时按顺序用 `／` 隔开。手动编辑完形时也要同步相应的答案字段。完形的提示默认可见。自他题用配对词、自动或他动用法及原句的写法限定要填的词；需要补写法时优先给首辅音或首假名。手动填写 `ClozeHint1` 或 `ClozeHint2` 时，一段普通提示适用于整组，也可按空号分别写 `<span data-jlpt-answer-hint="1">…</span>` 和编号为 `2` 的一段。中→日由 `Alt2` 控制。
 
 ## 来源
 
